@@ -3,3 +3,22 @@
  * @file
  * A description of what your module does.
  */
+
+/**
+ * Implements hook_menu().
+ */
+function mailfish_menu() {
+  $items = array();
+  $items['node/%/subscribe'] = array(
+    'title' => 'Subscribe',
+    'description' => t('Subscribe to this node.'),
+    'page callback' => 'mailfish_subscribe',
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+function mailfish_subscribe() {
+  return 'Placeholder text for the subscribe tab';
+}
