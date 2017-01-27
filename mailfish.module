@@ -139,3 +139,17 @@ function mailfish_block_view($delta = '') {
   }
   return $block;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function mailfish_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  $theme['mailfish_block'] = array(
+    'variables' => array(
+      'form' => '',
+    ),
+    'template' => 'mailfish_block',
+  );
+  return $theme;
+}
