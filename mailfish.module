@@ -68,5 +68,12 @@ function mailfish_email_form_submit($form, &$form_state) {
 }
 
 function mailfish_signup($email, $nid) {
-  dpm('Pretending to sign up for the node');
+  global $user;
+  $value = array(
+    'nid' => $nid,
+    'uid' => $user->uid,
+    'mail' => $email,
+    'created' => time(),
+  );
+  drupal_write_record('mailfish', $value);
 }
