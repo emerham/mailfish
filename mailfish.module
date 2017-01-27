@@ -130,9 +130,10 @@ function mailfish_block_view($delta = '') {
     case 'mailfish_subscribe':
       if (arg(0) == 'node' && is_numeric(arg(1))) {
         $nid = arg(1);
+        $form = drupal_get_form('mailfish_email_form', $nid);
         $block = array(
           'subject' => t('Sign up for this node'),
-          'content' => drupal_get_form('mailfish_email_form', $nid),
+          'content' => theme('mailfish_block', array('form' => drupal_render($form))),
         );
       }
       break;
@@ -149,7 +150,7 @@ function mailfish_theme($existing, $type, $theme, $path) {
     'variables' => array(
       'form' => '',
     ),
-    'template' => 'mailfish_block',
+    'template' => 'mailfish-block',
   );
   return $theme;
 }
