@@ -12,15 +12,12 @@ function mailfish_menu() {
   $items['node/%/subscribe'] = array(
     'title' => 'Subscribe',
     'description' => t('Subscribe to this node.'),
-    'page callback' => 'mailfish_subscribe',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mailfish_email_form', 1),
     'access arguments' => array('access content'),
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
-}
-
-function mailfish_subscribe() {
-  return drupal_get_form('mailfish_email_form');
 }
 
 /**
