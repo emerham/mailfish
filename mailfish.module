@@ -128,10 +128,13 @@ function mailfish_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'mailfish_subscribe':
-      $block = array(
-        'subject' => t('Sign up for this node'),
-        'content' => t('Sign up now!'),
-      );
+      if (arg(0) == 'node' && is_numeric(arg(1))) {
+        $nid = arg(1);
+        $block = array(
+          'subject' => t('Sign up for this node'),
+          'content' => drupal_get_form('mailfish_email_form', $nid),
+        );
+      }
       break;
   }
   return $block;
