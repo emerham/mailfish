@@ -94,6 +94,11 @@ function mailfish_email_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ * Signup function for mailfish.
+ *
+ * Creates a record in the mailfish table, linking the user to the node id.
+ */
 function mailfish_signup($email, $nid) {
   global $user;
   $value = array(
@@ -103,4 +108,31 @@ function mailfish_signup($email, $nid) {
     'created' => time(),
   );
   drupal_write_record('mailfish', $value);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function mailfish_block_info() {
+  $blocks = array();
+  $blocks['mailfish_subscribe'] = array(
+    'info' => t('Mailfish Signup Form'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function mailfish_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'mailfish_subscribe':
+      $block = array(
+        'subject' => t('Sign up for this node'),
+        'content' => t('Sign up now!'),
+      );
+      break;
+  }
+  return $block;
 }
