@@ -45,6 +45,14 @@ function mailfish_menu() {
     'access arguments' => array('administer mailfish settings'),
     'file' => 'mailfish.admin.inc',
   );
+  // Menu for admin reporting page.
+  $items['admin/reports/mailfish'] = array(
+    'title' => 'Mailfish Signups',
+    'description' => t('View Mailfish Signups'),
+    'page callback' => 'mailfish_signups',
+    'access arguments' => array('view mailfish report'),
+    'file' => 'mailfish.admin.inc',
+  );
   return $items;
 }
 
