@@ -194,3 +194,38 @@ function mailfish_form_node_form_alter(&$form, &$form_state) {
     );
   }
 }
+
+/**
+ * Determine if a node is set to display.
+ */
+function mailfish_get_node_enabled($nid) {
+  if (is_numeric($nid)) {
+    $result = db_query("SELECT nid FROM {mailfish_enabled} WHERE nid = :nid", array('nid' => $nid))->fetchField();
+    if ($result) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * If the node is not enabled, enable it.
+ */
+function mailfish_set_node_enabled($nid) {
+  if (is_numeric($nid) &! mailfish_get_node_enabled($nid)) {
+    db_insert('mailfish_enabled')
+      ->fields(array('nid' => $nid))
+      ->execute();
+  }
+}
+
+/**
+ * If the node is disabled, remove mailfish.
+ */
+function mailfish_delete_node_enabled($nid) {
+  if (is_numeric($nid)) {
+    db_delete('mailfish_enabled')
+      ->condition('nid', $nid)
+      ->execute();
+  }
+}
