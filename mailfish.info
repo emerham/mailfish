@@ -5,3 +5,4 @@ package = Mailfish
 version = 0.2-dev
 dependencies[] = block
 configure = admin/config/content/mailfish
+files[] = mailfish.test
