@@ -33,7 +33,8 @@ function mailfish_menu() {
     'description' => t('Subscribe to this node.'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('mailfish_email_form', 1),
-    'access arguments' => array('submit mailfish signups'),
+    'access callback' => 'mailfish_access_subscribe_tab',
+    'access arguments' => array('create_mailfish_subscriptions', 1),
     'type' => MENU_LOCAL_TASK,
   );
   // Menu for configuration screen.
@@ -146,7 +147,7 @@ function mailfish_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'mailfish_subscribe':
-      if (arg(0) == 'node' && is_numeric(arg(1))) {
+      if (arg(0) == 'node' && is_numeric(arg(1)) && mailfish_get_node_enabled(arg(1))) {
         $nid = arg(1);
         $form = drupal_get_form('mailfish_email_form', $nid);
         $block = array(
@@ -182,6 +183,7 @@ function mailfish_form_node_form_alter(&$form, &$form_state) {
   if (!empty($types[$node->type]) && user_access('administer mailfish settings')) {
     $form['mailfish'] = array(
       '#title' => t('Mailfish'),
+      '#description' => t('Setup Collecting of subscriptions.'),
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
@@ -263,4 +265,8 @@ function mailfish_node_update($node) {
  */
 function mailfish_node_delete($node) {
   mailfish_delete_node_enabled($node->nid);
+}
+
+function mailfish_access_subscribe_tab($permission, $nid) {
+  return mailfish_get_node_enabled($nid) && user_access($permission);
 }
