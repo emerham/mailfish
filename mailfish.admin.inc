@@ -22,7 +22,7 @@ function mailfish_admin_settings_form() {
 }
 
 /**
- *
+ * Creates a HTML table showing all the subscriptions.
  */
 function mailfish_signups() {
   $output = '';
