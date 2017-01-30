@@ -212,7 +212,7 @@ function mailfish_get_node_enabled($nid) {
  * If the node is not enabled, enable it.
  */
 function mailfish_set_node_enabled($nid) {
-  if (is_numeric($nid) &! mailfish_get_node_enabled($nid)) {
+  if (is_numeric($nid) & !mailfish_get_node_enabled($nid)) {
     db_insert('mailfish_enabled')
       ->fields(array('nid' => $nid))
       ->execute();
@@ -228,4 +228,39 @@ function mailfish_delete_node_enabled($nid) {
       ->condition('nid', $nid)
       ->execute();
   }
+}
+
+/**
+ * Implements hook_node_load().
+ */
+function mailfish_node_load($nodes, $types) {
+  foreach ($nodes as $nid => $node) {
+    $node->mailfish_enabled = mailfish_get_node_enabled($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function mailfish_node_insert($node) {
+  if ($node->mailfish_enabled) {
+    mailfish_set_node_enabled($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function mailfish_node_update($node) {
+  mailfish_delete_node_enabled($node->nid);
+  if ($node->mailfish_enabled) {
+    mailfish_set_node_enabled($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function mailfish_node_delete($node) {
+  mailfish_delete_node_enabled($node->nid);
 }
